@@ -39,9 +39,12 @@ def calculate_similarity_matrix(dataset, k):
     w_size = dataset.shape[0]
     W = np.zeros((w_size,w_size,))
     sq_euclidean_distances = pairwise_distances(dataset, metric='sqeuclidean') * -1
+    eps = 1e-8
     for i in range(w_size):
         for j in range(w_size):
-            wij = np.exp(sq_euclidean_distances[i,j]/(sigma[i]*sigma[j]))
+            sigma_i = np.maximum(sigma[i], eps)
+            sigma_j = np.maximum(sigma[j], eps)
+            wij = np.exp(sq_euclidean_distances[i,j]/(sigma_i*sigma_j))
             W[i,j] = wij
     return W
 
@@ -62,6 +65,6 @@ def update_pairwise_constraints(W, must_link, cannot_link):
     for point in cannot_link:
         i = point[0]
         j = point[1]
-        W[i,j] = np.inf
-        W[j,i] = np.inf
+        W[i,j] = 1e6
+        W[j,i] = 1e6
     return W
