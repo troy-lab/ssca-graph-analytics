@@ -34,7 +34,7 @@ def calculate_similarity_matrix(dataset, k):
     :param k: number of nearest neighbors
     :return: Similarity matrix
     """
-    distances, _ = get_k_nearest_neighbors_array(k, dataset)
+    distances = get_k_nearest_neighbors_array(k, dataset)
     sigma = calculate_sigmas(distances, k)
     w_size = dataset.shape[0]
     W = np.zeros((w_size,w_size,))
@@ -43,4 +43,25 @@ def calculate_similarity_matrix(dataset, k):
         for j in range(w_size):
             wij = np.exp(sq_euclidean_distances[i,j]/(sigma[i]*sigma[j]))
             W[i,j] = wij
+    return W
+
+
+def update_pairwise_constraints(W, must_link, cannot_link):
+    """
+    This step adds the link constraints to the similarity matrix
+    :param W: similarity matrix
+    :param must_link: required links (same label)
+    :param cannot_link: cannot link (different label)
+    :return:
+    """
+    for point in must_link:
+        i = point[0]
+        j = point[1]
+        W[i,j] = 0
+        W[j,i] = 0
+    for point in cannot_link:
+        i = point[0]
+        j = point[1]
+        W[i,j] = np.inf
+        W[j,i] = np.inf
     return W
