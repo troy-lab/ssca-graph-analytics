@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssca-final-project"
+version = "0.0"
+authors = [
+    { name="Troy Timmerman", email="ttimmer2@jhu.edu" }
+]
+
+description = "Implements Semi-supervised Spectral clustering"
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy",
+    "scikit-learn",
+    "scipy",
+    "matplotlib",
+    "networkx",
+    "scikit-fuzzy"
+]
+
+[tool.setuptools]
+packages = ["ssca","ssca"]
