@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics import pairwise_distances
 
 
+# Step 1 functions - construct similarity matrix.
 def get_k_nearest_neighbors_array(k:int, dataset:np.ndarray) -> np.ndarray:
     """
     Step one sigma value is weighted using k-nearest neighbors.
@@ -10,16 +11,16 @@ def get_k_nearest_neighbors_array(k:int, dataset:np.ndarray) -> np.ndarray:
     :return: list of k nearest neighbors
     """
     neighbors = NearestNeighbors(n_neighbors=k+1, algorithm='auto', metric='euclidean').fit(dataset)
-    distances, indices = neighbors.kneighbors(dataset)
-    return distances, indices
+    distances, _ = neighbors.kneighbors(dataset)
+    return distances
 
 
 def calculate_sigmas(distances, k):
     """
     These are the sigma values needed for step 1.
-    :param distances:
-    :param k:
-    :return:
+    :param distances: euclidean distance matrix
+    :param k: number of nearest neighbors
+    :return: array of sigma values
     """
     sigma = distances.sum(axis=1)
     sigma /= k
@@ -29,9 +30,9 @@ def calculate_sigmas(distances, k):
 def calculate_similarity_matrix(dataset, k):
     """
     This is the full step 1.
-    :param dataset:
-    :param k:
-    :return:
+    :param dataset: input dataset (no labels)
+    :param k: number of nearest neighbors
+    :return: Similarity matrix
     """
     distances, _ = get_k_nearest_neighbors_array(k, dataset)
     sigma = calculate_sigmas(distances, k)
