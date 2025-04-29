@@ -18,7 +18,6 @@ dependencies = [
     "scipy",
     "matplotlib",
     "networkx",
-    "scikit-fuzzy"
 ]
 
 [tool.setuptools]
