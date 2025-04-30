@@ -1,11 +1,8 @@
 # Semi-Supervised Spectral Clustering
 
-This implements semi-supervised spectral clustering by Ding et al.
+This implements semi-supervised spectral clustering by Ding et al. (the sigma portion). Due to errors in their paper, the spectral clustering follows Ng et al.
 
 
-## Errors
 
-Similarity graph is not necessarily symmetrical - needs adaptation.
-
-Time complexity upper bounds is really O(n^3) for large K (as K approaches N, you can no longer use a sparse graph).
-
+# Data
+Data for this program is in ./data, or can be loaded by sklearn and the functions in ssca.py
