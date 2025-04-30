@@ -1,9 +1,10 @@
 import random
-from sklearn.neighbors import NearestNeighbors
-from sklearn.cluster import KMeans
 import numpy as np
-from sklearn.metrics import pairwise_distances
 from scipy import linalg
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_moons, make_circles
+from sklearn.metrics import pairwise_distances
+from sklearn.neighbors import NearestNeighbors
 
 
 # Step 1 functions - construct similarity matrix.
@@ -96,6 +97,12 @@ def get_eig(matrix):
 
 
 def sample_links(num_links, labels):
+    """
+    Generate samples for must link and cannot link
+    :param num_links: how many samples
+    :param labels: how many labels
+    :return: tuple[array, array]
+    """
     must_link = []
     cannot_link = []
     for l in list(set(labels)):
@@ -110,6 +117,14 @@ def sample_links(num_links, labels):
     return must_link, cannot_link
 
 def ssca(X, y, must_link, cannot_link):
+    """
+    This function combines all steps from ng et al plus pairwise constraints.
+    :param X: input dataset
+    :param y: labels
+    :param must_link: link constraints
+    :param cannot_link:  don't link constraints'
+    :return: predictions
+    """
     k = len(list(set(y)))
     W = calculate_similarity_matrix(X, k)
     W = update_pairwise_constraints(W, must_link, cannot_link)
@@ -126,4 +141,12 @@ def ssca(X, y, must_link, cannot_link):
     y_hat = km.labels_
     return y_hat
 
+def load_circles(return_X_y=False):
+    X, y = make_circles(n_samples=300, noise=.05, random_state=42)
+    return X, y
+
+
+def load_moons(return_X_y=False):
+    X, y = make_moons(n_samples=300, noise=.1, random_state=42)
+    return X, y
 
